@@ -1,6 +1,7 @@
 # imports
 import pygame, time
 from sprites import elevator
+from states.title import title
 
 # game class
 class Game:
@@ -31,7 +32,9 @@ class Game:
     # main loop funtion of game
     def main_loop(self):
         self.load_asset()
+        self.load_state()
         while game.running:
+            self.update()
             self.get_event()
             self.render()
 
@@ -53,9 +56,16 @@ class Game:
     def load_asset(self):
         self.elevator = elevator(self)
 
+    def load_state(self):
+        self.title = title(self)
+        self.state_stack.append(self.title)
+
+    def update(self):
+        self.state_stack[-1].update()
+
     # render function of game
     def render(self):
-        self.state_stack[-1].render()
+        self.state_stack[-1].render(self.SCREEN)
         pygame.display.update()
         self.clock.tick(self.FPS)
 

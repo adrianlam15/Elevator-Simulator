@@ -5,6 +5,7 @@ class state:
     def __init__(self, game):
         self.game = game
         self.prev_state = None
+        self.surface = pygame.Surface((1280, 720))
 
     def enter_state(self):
         if len(self.game.state_stack) > 1:
