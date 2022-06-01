@@ -1,25 +1,26 @@
 import pygame
-from state import state
-from pause_menu import paused
+from states.state import state_format
+from states.pause_menu import paused
 
 
-class main_game(state):
-    def __init__(self, game, surface):
-        super().__init__(self, game, surface)
-        self.action = {"Paused": False}
-        self.surface = ""
+class main_game(state_format):
+    def __init__(self, game):
+        super().__init__(game)
+        self.surface = pygame.Surface((672, 378))
+        self.surface.fill("Black")
 
-    def update(self):
-        if self.action["Paused"]:
+    def update(self, actions):
+        if actions["Pause"]:
             next_state = paused(self.game)
             next_state.enter_state()
+        """self.elevator = elevator(self.game)
+        self.elevator.update()"""
+        self.game.reset_keys()
 
-        self.elevator = elevator(self.game)
-        self.elevator.update()
         # elevator velocity changes go here
 
     def render(self, surface):
-        surface.blit(self.surface, ("COORDS"))
+        surface.blit(self.surface, (0, 0))
 
 
 class elevator:

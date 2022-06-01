@@ -1,22 +1,21 @@
 import pygame
-from state import state
-from game_state import main_game
+from states.state import state_format
+from states.game_state import main_game
 
 
-class title(state):
-    def __init__(self, game, surface):
-        super().__init__(self, game, surface)
-        self.actions = {"Start": False, "Quit": False}
+class title(state_format):
+    def __init__(self, game):
+        super().__init__(game)
+        self.surface = pygame.Surface((672, 378))
+        self.surface.fill("White")
 
-    def update(self):
-        if self.actions["Start"]:
+    def update(self, actions):
+        print(actions["Click"])
+        if actions["Click"] is True:
             next_state = main_game(self.game)
             next_state.enter_state()
-        elif self.actions["Quit"]:
-            if len(self.game.state_stack) == 1:
-                self.exit_state()
-                exit()
+            print("Entered 2nd state.")
+        self.game.reset_keys()
 
     def render(self, surface):
-        surface.blit(self.surface, ("COORDS"))
-        pass
+        surface.blit(self.surface, (0, 0))

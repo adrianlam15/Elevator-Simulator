@@ -1,7 +1,7 @@
 import pygame
 
 
-class state:
+class state_format:
     def __init__(self, game):
         self.game = game
         self.prev_state = None
