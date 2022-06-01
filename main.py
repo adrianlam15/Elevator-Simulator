@@ -1,7 +1,15 @@
 # imports
-import pygame, time
-from states.launch_settings import setting_state
-from states.title import title
+import pygame, time, os
+
+# local imports
+try:
+    from states.title import title  # title module with 'title' class object
+except ModuleNotFoundError as msg:  # catching exception messages
+    msg = str(msg).lower()  # makes string lowercase
+    print(
+        f"Couldn't load modules; {msg}. Check path of modules."
+    )  # shows user which modules can not be loaded/found
+    exit()  # exit program
 
 # game class
 class Game:
@@ -33,20 +41,24 @@ class Game:
         self.load_asset()
         self.load_state()
 
-    # main loop funtion of game
+    # main loop function of game
     def main_loop(self):
         while self.running:
-            self.get_event()
-            self.update()
-            self.render()
+            self.get_event()  # gets events of user
+            self.update()  # logic // update method
+            self.render()  # rendering
+
+            """For testing state stacking purposes"""
             print(self.state_stack)
 
     # delta time function
     def delta_time(self):
-        self.time_now = time.time()
-        self.dt = self.time_now - self.prev_time
-        self.dt *= self.FPS
-        self.prev_time = self.time_now
+        """For testing delta time"""
+        # self.time_now = time.time()
+        # self.dt = self.time_now - self.prev_time
+        # self.dt *= self.FPS
+        # self.prev_time = self.time_now
+        pass
 
     # get event function of game
     def get_event(self):
@@ -59,7 +71,9 @@ class Game:
 
             if event.type == pygame.MOUSEBUTTONUP:
                 self.actions["Click"] = False
-            if len(self.state_stack) == 2:
+            if (
+                len(self.state_stack) == 2
+            ):  # if state stack contains 2 states (title and main game)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = True
@@ -67,7 +81,9 @@ class Game:
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = False
-            if len(self.state_stack) == 3:
+            if (
+                len(self.state_stack) == 3
+            ):  # if state stack contains 3 states (title, main game, and pause menu)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = True
