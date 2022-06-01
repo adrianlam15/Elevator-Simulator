@@ -26,11 +26,12 @@ class Game:
             0,
             0,
         )  # delta time, current time, and previous time aspect // for framerate independence
+        self.state_stack = []
 
     # main loop funtion of game
     def main_loop(self):
+        self.load_asset()
         while game.running:
-            self.load_asset()
             self.get_event()
             self.render()
 
@@ -50,10 +51,11 @@ class Game:
         pass
 
     def load_asset(self):
-        self.elevator = elevator()
+        self.elevator = elevator(self)
 
     # render function of game
     def render(self):
+        self.state_stack[-1].render()
         pygame.display.update()
         self.clock.tick(self.FPS)
 
