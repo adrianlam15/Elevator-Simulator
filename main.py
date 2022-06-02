@@ -1,3 +1,12 @@
+# Adrian, Lam (705929)
+# ICS4U Final Assignment: Elevator Simulator
+# GitHub: https://github.com/adrianlam15/Elevator-Simulator
+# 01-06-2022
+#
+# program desc:
+#
+# proposed edits:
+
 # imports
 import pygame, time, os, json
 
