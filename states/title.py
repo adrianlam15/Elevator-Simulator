@@ -10,11 +10,9 @@ class title(state_format):
         self.surface.fill("White")
 
     def update(self, actions):
-        print(actions["Click"])
         if actions["Click"] is True:
             next_state = main_game(self.game)
             next_state.enter_state()
-            print("Entered 2nd state.")
         self.game.reset_keys()
 
     def render(self, surface):

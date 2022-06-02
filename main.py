@@ -1,5 +1,5 @@
 # imports
-import pygame, time, os
+import pygame, time, os, json
 
 # local imports
 try:
@@ -10,6 +10,29 @@ except ModuleNotFoundError as msg:  # catching exception messages
         f"Couldn't load modules; {msg}. Check path of modules."
     )  # shows user which modules can not be loaded/found
     exit()  # exit program
+
+# class parser
+"""class parser:
+    def __init__(self):
+        self.file = "settings.json"
+
+    def read(self):
+        try:
+            with open(self.file, "r") as input_file:
+                config = json.load(input_file)
+                print
+
+        except FileNotFoundError as msg:
+            msg = str(msg)
+            i1 = msg.find("'")
+            i2 = msg.find("'", i1 + 1)
+            msg = msg[i1 : i2 + 1]
+            print(f"Could not find configuration file {msg}")
+
+
+parse = parser()
+parse.read()
+"""
 
 # game class
 class Game:
@@ -38,6 +61,7 @@ class Game:
         self.state_stack = []
         self.actions = {"Click": False, "Pause": False}
         self.pause = False
+        self.sound_enabled = True
         self.load_asset()
         self.load_state()
 
@@ -49,7 +73,7 @@ class Game:
             self.render()  # rendering
 
             """For testing state stacking purposes"""
-            print(self.state_stack)
+            # print(self.state_stack)
 
     # delta time function
     def delta_time(self):
@@ -90,7 +114,15 @@ class Game:
                         self.pause = False
 
     def load_asset(self):
-        pass
+        self.asset_dir = os.path.join("assets")
+        try:
+            pygame.mixer.music.load(
+                os.path.join(self.asset_dir, "sounds", "elevator_main.mp3")
+            )
+            pygame.mixer.music.play()
+        except pygame.error as msg:
+            print(f"{msg} (possibly system related issue).")
+            self.sound_enabled = False
 
     def load_state(self):
         self.title = title(self)
