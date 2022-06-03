@@ -30,20 +30,29 @@ class main_game(state_format):
 
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, elevator, game, file, x, y, image):
+    def __init__(self, elevator, game, file, x, y, image, val):
         super().__init__()
         self.elevator = elevator
         self.game = game
         self.file = file
         self.x, self.y = x, y
+        self.val = val
         self.dir = os.path.join("assets", "graphics", "Keys")
         self.image = pygame.image.load(os.path.join(self.dir, image))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.pushed = False
 
-    def update(self, action, image, cooldown):
-        if self.pushed == False:
-            self.image = pygame.image.load(os.path.join(self.dir, image))
+    def update(self):
+        if self.pushed == True:
+            print("Pushed")
+            self.image = pygame.image.load(
+                os.path.join(self.dir, self.val + ".5-Key.png")
+            )
+            print(self.val + ".5-Key.png")
+        pygame.display.update()
+
+    def button_collision_detection(self):
+        pass
 
     def render(self, surface):
         pass
@@ -75,7 +84,8 @@ class elevator:
     def button_collision_detection(self):
         for self.button in self.button_group:
             if self.button.rect.collidepoint(self.game.mouse_pos):
-                print("collisions")
+                self.button.pushed = True
+                self.button.update()
 
     def update(self, actions):
         if actions["Click"]:
@@ -101,8 +111,8 @@ class elevator:
                 print(self.service)
                 if elem == "S-Key.png":
                     break
-            self.buttons = button(self, self.game, self.button_config, x, y, elem)
-            self.buttons.button_val = elem[0]
+            val = elem[0]
+            self.buttons = button(self, self.game, self.button_config, x, y, elem, val)
             self.buttons.w, self.buttons.h = (
                 self.data["frames"][elem]["size"]["w"],
                 self.data["frames"][elem]["size"]["h"],

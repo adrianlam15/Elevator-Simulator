@@ -37,7 +37,7 @@ class Game:
             (self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
         )  # initialize window
         self.CAPTION = pygame.display.set_caption(
-            "Hello There!"
+            "Elevator Simulator"
         )  # set caption of window
         self.FPS = 60  # FPS
         self.clock = pygame.time.Clock()
@@ -123,6 +123,10 @@ class Game:
         except pygame.error as msg:
             print(f"{msg} (possibly system related issue).")
             self.sound_enabled = False
+        self.icon = pygame.image.load(
+            os.path.join(self.asset_dir, "graphics", "icon.png")
+        )
+        pygame.display.set_icon(self.icon)
 
     def load_state(self):
         self.title = title(self)
