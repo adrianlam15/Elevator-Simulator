@@ -4,6 +4,8 @@
 # 01-06-2022
 #
 # program desc:
+# additional features:
+# - states (title, main, paused)
 #
 # proposed edits:
 
