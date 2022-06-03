@@ -10,7 +10,7 @@ class paused(state_format):
 
     def update(self, actions):
         if self.game.pause:
-            print("Paused")
+            pass
         else:
             print("Resume")
             self.game.state_stack.pop()

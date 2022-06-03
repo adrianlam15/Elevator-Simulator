@@ -95,6 +95,7 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = True
                         self.pause = True
+                        print("Paused")
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = False
