@@ -22,29 +22,6 @@ except ModuleNotFoundError as msg:  # catching exception messages
     )  # shows user which modules can not be loaded/found
     exit()  # exit program
 
-# class parser
-"""class parser:
-    def __init__(self):
-        self.file = "settings.json"
-
-    def read(self):
-        try:
-            with open(self.file, "r") as input_file:
-                config = json.load(input_file)
-                print
-
-        except FileNotFoundError as msg:
-            msg = str(msg)
-            i1 = msg.find("'")
-            i2 = msg.find("'", i1 + 1)
-            msg = msg[i1 : i2 + 1]
-            print(f"Could not find configuration file {msg}")
-
-
-parse = parser()
-parse.read()
-"""
-
 # game class
 class Game:
     pygame.init()  # initialize pygame module
@@ -70,7 +47,12 @@ class Game:
             0,
         )  # delta time, current time, and previous time aspect // for framerate independence
         self.state_stack = []
-        self.actions = {"Click": False, "Pause": False}
+        self.actions = {
+            "Click": False,
+            "Pause": False,
+            "Play": False,
+            "Button Collision": False,
+        }
         self.pause = False
         self.sound_enabled = True
         self.load_asset()
@@ -99,11 +81,11 @@ class Game:
     def get_event(self):
         self.event = pygame.event.get()  # get events in self.event var
         for event in self.event:
+            self.mouse_pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.actions["Click"] = True
-
             if event.type == pygame.MOUSEBUTTONUP:
                 self.actions["Click"] = False
             if (
@@ -116,6 +98,12 @@ class Game:
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    print("Mouse down.")
+                    self.actions["Click"] = True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    print("Mouse up.")
+                    self.actions["Click"] = False
             if (
                 len(self.state_stack) == 3
             ):  # if state stack contains 3 states (title, main game, and pause menu)
