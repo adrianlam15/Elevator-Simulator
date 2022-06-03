@@ -19,6 +19,8 @@ class main_game(state_format):
             next_state.enter_state()
         self.elevator1.update(actions)
         self.elevator2.update(actions)
+        if self.elevator1 is self.elevator2:
+            print("True")
         self.game.reset_keys()
 
         # elevator velocity changes go here
