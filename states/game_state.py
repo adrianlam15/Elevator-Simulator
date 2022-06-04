@@ -8,6 +8,10 @@ class main_game(state_format):
         super().__init__(game)
         self.surface = pygame.Surface((672, 378))
         self.surface.fill("White")
+        self.music = pygame.mixer.Sound(
+            os.path.join(self.game.asset_dir, "sounds", "elevator_main.wav")
+        )
+        self.music.play(1, 0, 500)
         self.elevator1 = elevator(self.game, True, self.surface)
         self.elevator2 = elevator(self.game, False, self.surface)
         self.elevator1.button_init(300, 340)
@@ -48,11 +52,10 @@ class button(pygame.sprite.Sprite):
             self.image = pygame.image.load(
                 os.path.join(self.dir, self.val + ".5-Key.png")
             )
+            print("Pushed")
         else:
             self.image = pygame.image.load(os.path.join(self.dir, self.butt))
-
-    def button_collision_detection(self):
-        pass
+            print("Lifted")
 
     def render(self, surface):
         pass
@@ -77,6 +80,7 @@ class elevator:
         }
         self.button_config = "button_coords.json"
         self.button_group = []
+        self.floor_queue = []
         with open(self.button_config, "r") as input:
             self.data = json.load(input)
         input.close()

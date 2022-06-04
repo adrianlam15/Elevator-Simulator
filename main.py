@@ -115,14 +115,14 @@ class Game:
 
     def load_asset(self):
         self.asset_dir = os.path.join("assets")
-        try:
+        """try:
             pygame.mixer.music.load(
                 os.path.join(self.asset_dir, "sounds", "elevator_main.mp3")
             )
             pygame.mixer.music.play()
         except pygame.error as msg:
             print(f"{msg} (possibly system related issue).")
-            self.sound_enabled = False
+            self.sound_enabled = False"""
         self.icon = pygame.image.load(
             os.path.join(self.asset_dir, "graphics", "icon.png")
         )
