@@ -6,6 +6,8 @@
 # program desc:
 # additional features:
 # - states (title, main, paused)
+# - .wav sound files have to be used because .mp3 and .ogg files
+# contain errors when trying to load specified module
 #
 # proposed edits:
 

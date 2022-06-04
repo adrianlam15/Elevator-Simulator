@@ -26,17 +26,20 @@ class title(state_format):
         self.disc_text = pygame.font.Font(
             os.path.join(self.game.asset_dir, "fonts", "fibberish.ttf"), 32
         )
+        proj_link = "Project can be found on GitHub at: https://github.com/adrianlam15/Elevator-Simulator"
+        welcome = "Welcome to Elevator Simulator!"
         self.disc_text = self.disc_text.render(
-            "Welcome to Elevator Simulator!", True, "White"
+            proj_link.ljust(len(proj_link) + 20) + welcome,
+            True,
+            "White",
         )
-        self.creator_text = pygame.font.Font(
-            os.path.join(self.game.asset_dir, "fonts", "fibberish.ttf"), 20
-        )
+        self.disc_text_rect = self.disc_text.get_rect(topright=(0, 345))
+
+        self.creator_text = pygame.font.SysFont("Arial", 12)
         self.creator_text = self.creator_text.render(
-            "Made by Adrian Lam - 2022", True, "Grey"
+            "Made by Adrian Lam - 2022", True, (51, 51, 51)
         )
 
-        self.disc_text_rect = self.disc_text.get_rect(center=(0, 361))
         self.creator_text_rect = self.creator_text.get_rect(topright=(672, 0))
         self.bottom_bar = pygame.Rect(0, 340, 672, 378)
 
@@ -59,7 +62,11 @@ class title(state_format):
             self.x += 1
         if self.x == 32:
             self.x = 0"""
-        self.disc_text_rect.x += 5
+        if self.disc_text_rect.x > 672:
+            self.disc_text_rect.x = -1800
+        else:
+            self.disc_text_rect.x += 3
+        print(self.disc_text_rect.x)
         self.game.reset_keys()
 
     def render(self, surface):
