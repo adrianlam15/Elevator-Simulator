@@ -44,15 +44,39 @@ class button(pygame.sprite.Sprite):
                     self.image.get_height() * self.multiplier,
                 ),
             )
+            if self.val == "Sound":
+                if self.game.sound_enabled == False:
+                    self.image = pygame.image.load(
+                        os.path.join(self.dir, self.val + ".5-Key.png")
+                    )
+                    self.image = pygame.transform.scale(
+                        self.image,
+                        (
+                            self.image.get_width() * self.multiplier,
+                            self.image.get_height() * self.multiplier,
+                        ),
+                    )
+                else:
+                    self.image = pygame.image.load(
+                        os.path.join(self.dir, self.image_name)
+                    )
+                    self.image = pygame.transform.scale(
+                        self.image,
+                        (
+                            self.image.get_width() * self.multiplier,
+                            self.image.get_height() * self.multiplier,
+                        ),
+                    )
         else:
-            self.image = pygame.image.load(os.path.join(self.dir, self.image_name))
-            self.image = pygame.transform.scale(
-                self.image,
-                (
-                    self.image.get_width() * self.multiplier,
-                    self.image.get_height() * self.multiplier,
-                ),
-            )
+            if not self.val == "Sound":
+                self.image = pygame.image.load(os.path.join(self.dir, self.image_name))
+                self.image = pygame.transform.scale(
+                    self.image,
+                    (
+                        self.image.get_width() * self.multiplier,
+                        self.image.get_height() * self.multiplier,
+                    ),
+                )
 
 
 class title(state_format):
@@ -77,14 +101,13 @@ class title(state_format):
             self.data = json.load(input)
         input.close()
         self.button_group = []
-
+        self.i = 1
         self.init_elem()
 
     def init_elem(self):
         self.music = pygame.mixer.Sound(
             os.path.join(self.game.asset_dir, "sounds", "menu_music.wav")
         )
-        self.music.play(1, 0, 500)
         self.disc_text = pygame.font.Font(
             os.path.join(self.game.asset_dir, "fonts", "pressstart2p.ttf"), 20
         )
@@ -112,14 +135,27 @@ class title(state_format):
 
     def button_collision_detection(self, actions):
         for self.button in self.button_group:
-            if self.button.rect.collidepoint(self.game.mouse_pos):
+            if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 if self.button.val == "Play":
                     self.game.actions["Play"] = True
+                elif self.button.val == "Sound":
+                    if self.game.sound_enabled == True:
+                        self.game.sound_enabled = False
+                    elif self.game.sound_enabled == False:
+                        self.game.sound_enabled = True
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
+
+    def music_enabled(self, sound_enabled, i):
+        if sound_enabled and self.i == 1:
+            self.music.play(1, 0, 500)
+            self.i = 0
+        elif sound_enabled == False and self.i == 0:
+            self.music.stop()
+            self.i += 1
 
     def update(self, actions):
         if actions["Click"]:
@@ -131,6 +167,8 @@ class title(state_format):
                 self.game.actions["Play"] = False
         elif actions["Click"] == False:
             self.button_collision_detection(actions)
+        self.music_enabled(self.game.sound_enabled, self.i)
+        print(self.i)
 
         # updating frame of spinning planet
         """self.image = pygame.image.load(

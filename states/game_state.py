@@ -84,7 +84,7 @@ class elevator:
 
     def button_collision_detection(self, actions):
         for self.button in self.button_group:
-            if self.button.rect.collidepoint(self.game.mouse_pos):
+            if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
             if not actions["Click"]:
