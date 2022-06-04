@@ -19,7 +19,7 @@ class main_game(state_format):
             next_state.enter_state()
         self.elevator1.update(actions)
         self.elevator2.update(actions)
-        self.game.reset_keys()
+        """self.game.reset_keys()"""
 
         # elevator velocity changes go here
 
@@ -38,18 +38,18 @@ class button(pygame.sprite.Sprite):
         self.x, self.y = x, y
         self.val = val
         self.dir = os.path.join("assets", "graphics", "Keys")
-        self.image = pygame.image.load(os.path.join(self.dir, image))
+        self.butt = image
+        self.image = pygame.image.load(os.path.join(self.dir, self.butt))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.pushed = False
 
-    def update(self):
-        if self.pushed == True:
-            print("Pushed")
+    def update(self, pushed):
+        if pushed:
             self.image = pygame.image.load(
                 os.path.join(self.dir, self.val + ".5-Key.png")
             )
-            print(self.val + ".5-Key.png")
-        pygame.display.update()
+        else:
+            self.image = pygame.image.load(os.path.join(self.dir, self.butt))
 
     def button_collision_detection(self):
         pass
@@ -81,15 +81,20 @@ class elevator:
             self.data = json.load(input)
         input.close()
 
-    def button_collision_detection(self):
+    def button_collision_detection(self, actions):
         for self.button in self.button_group:
-            if self.button.rect.collidepoint(self.game.mouse_pos):
+            if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 self.button.pushed = True
-                self.button.update()
+                self.button.update(self.button.pushed)
+            if not actions["Click"]:
+                self.button.pushed = False
+                self.button.update(self.button.pushed)
 
     def update(self, actions):
         if actions["Click"]:
-            self.button_collision_detection()
+            self.button_collision_detection(actions)
+        if actions["Click"] == False:
+            self.button_collision_detection(actions)
 
         """if actions["Click"]:
         self.button_collision_detection()"""
