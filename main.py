@@ -49,12 +49,7 @@ class Game:
             0,
         )  # delta time, current time, and previous time aspect // for framerate independence
         self.state_stack = []
-        self.actions = {
-            "Click": False,
-            "Pause": False,
-            "Play": False,
-            "Button Collision": False,
-        }
+        self.actions = {"Click": False, "Pause": False, "Play": False}
         self.pause = False
         self.sound_enabled = True
         self.load_asset()
@@ -65,6 +60,7 @@ class Game:
         while self.running:
             self.get_event()  # gets events of user
             self.update()  # logic // update method
+            print(self.actions)
             self.render()  # rendering
 
             """For testing state stacking purposes"""

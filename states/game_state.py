@@ -11,7 +11,8 @@ class main_game(state_format):
         self.music = pygame.mixer.Sound(
             os.path.join(self.game.asset_dir, "sounds", "elevator_main.wav")
         )
-        self.music.play(1, 0, 500)
+        if self.game.sound_enabled:
+            self.music.play(1, 0, 500)
         self.elevator1 = elevator(self.game, True, self.surface)
         self.elevator2 = elevator(self.game, False, self.surface)
         self.elevator1.button_init(300, 340)
@@ -34,11 +35,9 @@ class main_game(state_format):
 
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, elevator, game, file, x, y, image, val):
+    def __init__(self, elevator, game, x, y, image, val):
         super().__init__()
-        self.elevator = elevator
         self.game = game
-        self.file = file
         self.x, self.y = x, y
         self.val = val
         self.dir = os.path.join("assets", "graphics", "Keys")
@@ -52,10 +51,8 @@ class button(pygame.sprite.Sprite):
             self.image = pygame.image.load(
                 os.path.join(self.dir, self.val + ".5-Key.png")
             )
-            print("Pushed")
         else:
             self.image = pygame.image.load(os.path.join(self.dir, self.butt))
-            print("Lifted")
 
     def render(self, surface):
         pass
@@ -87,7 +84,7 @@ class elevator:
 
     def button_collision_detection(self, actions):
         for self.button in self.button_group:
-            if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
+            if self.button.rect.collidepoint(self.game.mouse_pos):
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
             if not actions["Click"]:
@@ -97,7 +94,7 @@ class elevator:
     def update(self, actions):
         if actions["Click"]:
             self.button_collision_detection(actions)
-        if actions["Click"] == False:
+        elif actions["Click"] == False:
             self.button_collision_detection(actions)
 
         """if actions["Click"]:
@@ -115,16 +112,16 @@ class elevator:
                 self.direction[keys] = False
 
     def button_init(self, x=300, y=340):
-        for elem in self.data["frames"]:
+        for elem in self.data["frames"]["elevator buttons"]:
             if not self.service:
                 print(self.service)
                 if elem == "S-Key.png":
                     break
             val = elem[0]
-            self.buttons = button(self, self.game, self.button_config, x, y, elem, val)
+            self.buttons = button(self, self.game, x, y, elem, val)
             self.buttons.w, self.buttons.h = (
-                self.data["frames"][elem]["size"]["w"],
-                self.data["frames"][elem]["size"]["h"],
+                self.data["frames"]["elevator buttons"][elem]["size"]["w"],
+                self.data["frames"]["elevator buttons"][elem]["size"]["h"],
             )
             y -= 30
             self.button_group.append(self.buttons)

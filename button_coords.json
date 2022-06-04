@@ -1,45 +1,51 @@
 {"frames": {
-
-    "1-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
+    "elevator buttons":{
+        "1-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "2-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "3-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "4-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "5-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "6-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
+        },
+        "S-Key.png": {
+            "size": {
+                "w": 32,
+                "h": 27
+            }
         }
     },
-    "2-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
-    },
-    "3-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
-    },
-    "4-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
-    },
-    "5-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
-    },
-    "6-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
-    },
-    "S-Key.png": {
-        "size": {
-            "w": 32,
-            "h": 27
-        }
+    "Main Menu Buttons":[
+        "Play-Key.png",
+        "Quit-Key.png",
+        "Sound-Key.png"]
     }
-}}
+}
