@@ -143,11 +143,15 @@ class title(state_format):
                         self.game.sound_enabled = False
                     elif self.game.sound_enabled == False:
                         self.game.sound_enabled = True
+                elif self.button.val == "Quit":
+                    self.game.quit = True
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
+                if self.game.quit == True:
+                    exit()
 
     def music_enabled(self, sound_enabled, i):
         if sound_enabled and self.i == 1:
@@ -160,15 +164,20 @@ class title(state_format):
     def update(self, actions):
         if actions["Click"]:
             self.button_collision_detection(actions)
+            """if actions["Play"]:
+                next_state = main_game(self.game)
+                next_state.enter_state()
+                self.music.stop()
+                self.game.actions["Play"] = False"""
+        elif actions["Click"] == False:
+            self.button_collision_detection(actions)
+
             if actions["Play"]:
                 next_state = main_game(self.game)
                 next_state.enter_state()
                 self.music.stop()
                 self.game.actions["Play"] = False
-        elif actions["Click"] == False:
-            self.button_collision_detection(actions)
         self.music_enabled(self.game.sound_enabled, self.i)
-        print(self.i)
 
         # updating frame of spinning planet
         """self.image = pygame.image.load(

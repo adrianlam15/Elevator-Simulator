@@ -51,6 +51,7 @@ class Game:
         self.state_stack = []
         self.actions = {"Click": False, "Pause": False, "Play": False}
         self.pause = False
+        self.quit = False
         self.sound_enabled = True
         self.load_asset()
         self.load_state()
