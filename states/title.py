@@ -83,7 +83,7 @@ class title(state_format):
     def __init__(self, game):
         super().__init__(game)
         self.surface = pygame.Surface((672, 378))
-        self.surface.fill("White")
+        self.surface.fill((40, 42, 54))
 
         # Testing spinning planet and list comprehension
         """self.planet_images = [
@@ -164,14 +164,8 @@ class title(state_format):
     def update(self, actions):
         if actions["Click"]:
             self.button_collision_detection(actions)
-            """if actions["Play"]:
-                next_state = main_game(self.game)
-                next_state.enter_state()
-                self.music.stop()
-                self.game.actions["Play"] = False"""
         elif actions["Click"] == False:
             self.button_collision_detection(actions)
-
             if actions["Play"]:
                 next_state = main_game(self.game)
                 next_state.enter_state()
@@ -198,7 +192,7 @@ class title(state_format):
             self.disc_text_rect.x += 3
 
     def render(self, surface):
-        pygame.draw.rect(self.surface, "Black", self.bottom_bar)
+        pygame.draw.rect(self.surface, (189, 147, 249), self.bottom_bar)
         self.surface.blit(self.disc_text, self.disc_text_rect)
         self.surface.blit(self.creator_text, self.creator_text_rect)
         self.button_group.draw(self.surface)

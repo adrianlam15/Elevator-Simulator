@@ -7,7 +7,7 @@ class main_game(state_format):
     def __init__(self, game):
         super().__init__(game)
         self.surface = pygame.Surface((672, 378))
-        self.surface.fill("White")
+        self.surface.fill((40, 42, 54))
         self.music = pygame.mixer.Sound(
             os.path.join(self.game.asset_dir, "sounds", "elevator_main.wav")
         )
