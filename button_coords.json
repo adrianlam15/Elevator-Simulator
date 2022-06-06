@@ -46,6 +46,38 @@
     "Main Menu Buttons":[
         "Play-Key.png",
         "Quit-Key.png",
-        "Sound-Key.png"]
+        "Sound-Key.png"],
+    "Elevator Pictures":{
+        "elevator_1.png":{
+            "size": {
+                "w": 29,
+                "h": 23
+            }
+        },
+        "elevator_2.png":{
+            "size": {
+                "w": 29,
+                "h": 23
+            }
+        },
+        "elevator_3.png":{
+            "size": {
+                "w": 29,
+                "h": 23
+            }
+        },
+        "elevator_4.png":{
+            "size": {
+                "w": 29,
+                "h": 23
+            }
+        },
+        "elevator_5.png":{
+            "size": {
+                "w": 29,
+                "h": 23
+            }
+        }
+        
     }
-}
+}}
