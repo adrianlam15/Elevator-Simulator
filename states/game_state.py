@@ -21,19 +21,10 @@ class main_game(state_format):
             self.music.play(1, 0, 500)
         self.elevator_group = []
 
-        self.elevator1 = elevator(self.game, True, self.surface)
-        self.elevator2 = elevator(self.game, False, self.surface)
+        self.elevator1 = elevator(self.game, True, 10, 200)
+        self.elevator2 = elevator(self.game, False, 10, 300)
         self.elevator_group.append(self.elevator1)
         self.elevator_group.append(self.elevator2)
-        print(data["frames"]["Elevator Pictures"])
-        for elevator_obj in self.elevator_group:
-            for image_name in data["frames"]["Elevator Pictures"]:
-                img_load = pygame.image.load(
-                    os.path.join(
-                        self.game.asset_dir, "graphics", "elevator", image_name
-                    )
-                )
-                elevator_obj.images.append(img_load)
         self.elevator1.button_init(300, 340)
         self.elevator2.button_init(364, 340)
 
@@ -64,6 +55,9 @@ class button(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(self.dir, self.butt))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.pushed = False
+        self.sound = pygame.mixer.Sound(
+            os.path.join(self.game.asset_dir, "sounds", "button_sound.wav")
+        )
 
     def update(self, pushed):
         if pushed:
@@ -78,14 +72,14 @@ class button(pygame.sprite.Sprite):
 
 
 class elevator:
-    def __init__(self, game, service, surface):
+    def __init__(self, game, service, x, y):
         self.game = game
+        self.x, self.y = x, y
         self.images = []
         self.service = service
-        self.surface = surface  # temp
-        self.rect = self.surface.get_rect()
         self.direction = {"Up": False, "Down": False}
-        self.door_state = {"Open": False, "Closed": True}
+        self.door_state = {"Open": False}
+        self.user_choice = {"Open": True}
         self.curr_floor = {
             "1": True,
             "2": False,
@@ -96,12 +90,25 @@ class elevator:
         }
         self.button_group = []
         self.floor_queue = []
+        self.curr_frame = 0
+        for image_name in data["frames"]["Elevator Pictures"]:
+            img_load = pygame.image.load(
+                os.path.join(self.game.asset_dir, "graphics", "elevator", image_name)
+            )
+            img_load = pygame.transform.scale(
+                img_load, (img_load.get_width() * 2, img_load.get_height() * 2)
+            )
+            self.images.append(img_load)
+        self.image = self.images[self.curr_frame]
+        self.surface = pygame.Surface((img_load.get_width(), img_load.get_height()))
+        self.rect = self.surface.get_rect(topleft=(x, y))
 
     def button_collision_detection(self, actions):
         for self.button in self.button_group:
             if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
+                self.button.sound.play()
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
@@ -111,10 +118,27 @@ class elevator:
             self.button_collision_detection(actions)
         elif actions["Click"] == False:
             self.button_collision_detection(actions)
+        if self.user_choice["Open"] == True:
+            if self.door_state["Open"] == False:
+                if self.curr_frame < 4:
+                    self.image = self.images[self.curr_frame]
+                    self.curr_frame += 1
 
-        """if actions["Click"]:
-        self.button_collision_detection()"""
-        if self.direction["Up"] is True:
+                else:
+                    self.curr_frame = 4
+                    self.door_state["Open"] = True
+        else:
+            if self.curr_frame != 0:
+                if self.curr_frame > 0:
+                    self.image = self.images[self.curr_frame]
+                    self.curr_frame -= 1
+                else:
+                    self.curr_frame = 0
+                    self.door_state["Open"] = False
+        print(self.user_choice)
+        print(self.door_state)
+
+        """if self.direction["Up"] is True:
             self.direction["Down"] = False
         elif self.direction["Down"] is True:
             self.direction["Up"] = False
@@ -124,7 +148,7 @@ class elevator:
             self.door_state["Closed"] = True
         if self.door_state["Open"] is True:
             for keys in self.direction.keys():
-                self.direction[keys] = False
+                self.direction[keys] = False"""
 
     def button_init(self, x=300, y=340):
         for elem in data["frames"]["elevator buttons"]:
@@ -144,3 +168,4 @@ class elevator:
 
     def render(self, surface):
         self.button_group.draw(surface)
+        surface.blit(self.image, self.rect)

@@ -62,7 +62,6 @@ class Game:
             self.get_event()  # gets events of user
             self.update()  # logic // update method
             print(self.actions)
-            print(self.sound_enabled)
             self.render()  # rendering
 
             """For testing state stacking purposes"""
