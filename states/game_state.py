@@ -47,7 +47,7 @@ class main_game(state_format):
         self.surface.blit(self.pole2.image, self.pole2.rect)
 
         self.elevator1.render(self.surface)
-        """self.elevator2.render(self.surface)"""
+        self.elevator2.render(self.surface)
         surface.blit(self.surface, (0, 0))
 
 
@@ -101,14 +101,8 @@ class elevator:
         self.direction = {"Up": False, "Down": False}
         self.door_state = {"Open": False}
         self.user_choice = {"Open": False}
-        self.curr_floor = {
-            "1": True,
-            "2": False,
-            "3": False,
-            "4": False,
-            "5": False,
-            "6": False,
-        }
+        self.curr_floor = 1
+        self.next_floor = 1
         self.button_group = []
         self.floor_queue = []
         self.curr_frame = 0
@@ -132,7 +126,28 @@ class elevator:
                 self.button.button_sound.play(self.button.sound)
                 """if not self.button.button_sound.get_busy():
                     print("Not played")"""
+                if self.button.val == "1":
+                    self.next_floor = 1
+                    print("1")
+                elif self.button.val == "2":
+                    self.next_floor = 2
 
+                    print("2")
+
+                elif self.button.val == "3":
+                    print("3")
+                    self.next_floor = 3
+
+                elif self.button.val == "4":
+                    print("4")
+                    self.next_floor = 4
+                elif self.button.val == "5":
+                    print("5")
+                    self.next_floor = 5
+                elif self.button.val == "6":
+                    print("6")
+                    self.next_floor = 6
+                print(self.rect.y)
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
@@ -159,12 +174,71 @@ class elevator:
                 else:
                     self.curr_frame = 0
                     self.door_state["Open"] = False
-        for keys in self.curr_floor.keys():
+        if self.next_floor == 1:
+            if self.curr_floor == 1:
+                self.rect.y = 300
+            else:
+                if self.rect.y != 300:
+                    self.rect.y += 1
+                elif self.rect.y == 300:
+                    self.curr_floor = 1
+        elif self.next_floor == 2:
+            if self.curr_floor == 2:
+                self.rect.y = 254
+            else:
+                if self.rect.y > 254:
+                    self.rect.y -= 1
+                elif self.rect.y < 254:
+                    self.rect.y += 1
+                else:
+                    self.curr_floor = 2
+        elif self.next_floor == 3:
+            if self.curr_floor == 3:
+                self.rect.y = 208
+            else:
+                if self.rect.y > 208:
+                    self.rect.y -= 1
+                elif self.rect.y < 208:
+                    self.rect.y += 1
+                else:
+                    self.curr_floor = 3
+        elif self.next_floor == 4:
+            if self.curr_floor == 4:
+                self.rect.y = 162
+            else:
+                if self.rect.y > 162:
+                    self.rect.y -= 1
+                elif self.rect.y < 162:
+                    self.rect.y += 1
+                else:
+                    self.curr_floor = 4
+        elif self.next_floor == 5:
+            if self.curr_floor == 5:
+                self.rect.y = 116
+            else:
+                if self.rect.y > 116:
+                    self.rect.y -= 1
+                elif self.rect.y < 116:
+                    self.rect.y += 1
+                else:
+                    self.curr_floor = 5
+        elif self.next_floor == 6:
+            if self.curr_floor == 6:
+                self.rect.y = 69
+            else:
+                if self.rect.y > 69:
+                    self.rect.y -= 1
+                elif self.rect.y < 69:
+                    self.rect.y += 1
+                else:
+                    self.curr_floor = 6
+
+        """for keys in self.curr_floor.keys():
             y = 300
             if self.curr_floor[keys] == True:
                 self.rect = self.surface.get_rect(
                     topleft=(135, y - (int(keys) - 1) * 23)
-                )
+                )"""
         """if self.direction["Up"] is True:
             self.direction["Down"] = False
         elif self.direction["Down"] is True:
