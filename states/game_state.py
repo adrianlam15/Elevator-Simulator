@@ -11,18 +11,21 @@ class main_game(state_format):
     def __init__(self, game):
         super().__init__(game)
         service = True
-
+        pygame.mixer.set_num_channels(8)
         self.surface = pygame.Surface((672, 378))
-        self.surface.fill((40, 42, 54))
         self.music = pygame.mixer.Sound(
             os.path.join(self.game.asset_dir, "sounds", "elevator_main.wav")
         )
         if self.game.sound_enabled:
             self.music.play(1, 0, 500)
+
+        self.pole1 = pole(self.game, 164, 345)
+        self.pole2 = pole(self.game, 532, 345)
+
         self.elevator_group = []
 
-        self.elevator1 = elevator(self.game, True, 10, 200)
-        self.elevator2 = elevator(self.game, False, 10, 300)
+        self.elevator1 = elevator(self.game, True, 135, 300)
+        self.elevator2 = elevator(self.game, False, 504, 300)
         self.elevator_group.append(self.elevator1)
         self.elevator_group.append(self.elevator2)
         self.elevator1.button_init(300, 340)
@@ -39,9 +42,13 @@ class main_game(state_format):
         # elevator velocity changes go here
 
     def render(self, surface):
-        surface.blit(self.surface, (0, 0))
+        self.surface.fill((40, 42, 54))
+        self.surface.blit(self.pole1.image, self.pole1.rect)
+        self.surface.blit(self.pole2.image, self.pole2.rect)
+
         self.elevator1.render(self.surface)
-        self.elevator2.render(self.surface)
+        """self.elevator2.render(self.surface)"""
+        surface.blit(self.surface, (0, 0))
 
 
 class button(pygame.sprite.Sprite):
@@ -55,6 +62,7 @@ class button(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(self.dir, self.butt))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.pushed = False
+        self.button_sound = pygame.mixer.Channel(1)
         self.sound = pygame.mixer.Sound(
             os.path.join(self.game.asset_dir, "sounds", "button_sound.wav")
         )
@@ -71,6 +79,19 @@ class button(pygame.sprite.Sprite):
         pass
 
 
+class pole:
+    def __init__(self, game, x, y):
+        self.game = game
+        self.x, self.y = x, y
+        self.image = pygame.image.load(
+            os.path.join(self.game.asset_dir, "graphics", "elevator", "pole.png")
+        )
+        self.image = pygame.transform.scale(
+            self.image, (self.image.get_width() * 2, self.image.get_height() * 2)
+        )
+        self.rect = self.image.get_rect(midbottom=(x, y))
+
+
 class elevator:
     def __init__(self, game, service, x, y):
         self.game = game
@@ -79,7 +100,7 @@ class elevator:
         self.service = service
         self.direction = {"Up": False, "Down": False}
         self.door_state = {"Open": False}
-        self.user_choice = {"Open": True}
+        self.user_choice = {"Open": False}
         self.curr_floor = {
             "1": True,
             "2": False,
@@ -108,7 +129,10 @@ class elevator:
             if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
-                self.button.sound.play()
+                self.button.button_sound.play(self.button.sound)
+                """if not self.button.button_sound.get_busy():
+                    print("Not played")"""
+
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
@@ -135,9 +159,12 @@ class elevator:
                 else:
                     self.curr_frame = 0
                     self.door_state["Open"] = False
-        print(self.user_choice)
-        print(self.door_state)
-
+        for keys in self.curr_floor.keys():
+            y = 300
+            if self.curr_floor[keys] == True:
+                self.rect = self.surface.get_rect(
+                    topleft=(135, y - (int(keys) - 1) * 23)
+                )
         """if self.direction["Up"] is True:
             self.direction["Down"] = False
         elif self.direction["Down"] is True:
@@ -167,5 +194,5 @@ class elevator:
         self.button_group = pygame.sprite.Group(self.button_group)
 
     def render(self, surface):
-        self.button_group.draw(surface)
         surface.blit(self.image, self.rect)
+        self.button_group.draw(surface)

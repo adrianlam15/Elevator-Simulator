@@ -187,7 +187,7 @@ class title(state_format):
         if self.x == 32:
             self.x = 0"""
         if self.disc_text_rect.x > 672:
-            self.disc_text_rect.x = -1800
+            self.disc_text_rect.x = -2400
         else:
             self.disc_text_rect.x += 3
 
