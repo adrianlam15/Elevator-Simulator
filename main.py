@@ -48,13 +48,17 @@ class Game:
             0,
             0,
         )  # delta time, current time, and previous time aspect // for framerate independence
-        self.state_stack = []
-        self.actions = {"Click": False, "Pause": False, "Play": False}
-        self.pause = False
-        self.quit = False
-        self.sound_enabled = True
-        self.load_asset()
-        self.load_state()
+        self.state_stack = []  # state stack of game
+        self.actions = {
+            "Click": False,
+            "Pause": False,
+            "Play": False,
+        }  # possible actions detected from user
+        self.pause = False  # pause state of game
+        self.quit = False  # quit state
+        self.sound_enabled = True  # sound is enabled by default
+        self.load_asset()  # calls load asset function
+        self.load_state()  # calls load state function
 
     # main loop function of game
     def main_loop(self):
@@ -78,75 +82,76 @@ class Game:
     # get event function of game
     def get_event(self):
         self.event = pygame.event.get()  # get events in self.event var
-        for event in self.event:
-            self.mouse_pos = pygame.mouse.get_pos()
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.actions["Click"] = True
-            if event.type == pygame.MOUSEBUTTONUP:
-                self.actions["Click"] = False
-            if (
-                len(self.state_stack) == 2
-            ):  # if state stack contains 2 states (title and main game)
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.actions["Pause"] = True
-                        self.pause = True
-                        print("Paused")
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_ESCAPE:
-                        self.actions["Pause"] = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.actions["Click"] = True
-                if event.type == pygame.MOUSEBUTTONUP:
-                    self.actions["Click"] = False
-            if (
-                len(self.state_stack) == 3
-            ):  # if state stack contains 3 states (title, main game, and pause menu)
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.actions["Pause"] = True
-                        self.pause = False
 
+        # event handler
+        for event in self.event:
+            self.mouse_pos = pygame.mouse.get_pos()  # gets position of mouse
+            if event.type == pygame.QUIT:  # if event is quit
+                pygame.quit()  # quit pygame
+            if event.type == pygame.MOUSEBUTTONDOWN:  # if mouse button down is detected
+                self.actions["Click"] = True  # set click to true
+            if event.type == pygame.MOUSEBUTTONUP:  # if mouse button up is detected
+                self.actions["Click"] = False  # set click to false
+
+            # if state stack contains 2 states (title and main game)
+            if len(self.state_stack) == 2:
+                if event.type == pygame.KEYDOWN:  # if key down is detected
+                    if event.key == pygame.K_ESCAPE:  # if escape key is detected
+                        self.actions["Pause"] = True  # set pause to True
+                        self.pause = True  # pause state
+                        print("Paused")
+                if event.type == pygame.KEYUP:  # if key up is detected
+                    if event.key == pygame.K_ESCAPE:  # if escape key is detected
+                        self.actions["Pause"] = False  # set pause to False
+
+            # if state stack contains 3 states (title, main game, and pause menu)
+            if len(self.state_stack) == 3:
+                if event.type == pygame.KEYDOWN:  # if key down is detected
+                    if event.key == pygame.K_ESCAPE:  # if escape key is detected
+                        self.actions["Pause"] = True  # set pause to True
+                        self.pause = False  # disables pause state
+
+    # load asset function
     def load_asset(self):
-        self.asset_dir = os.path.join("assets")
-        """try:
-            pygame.mixer.music.load(
-                os.path.join(self.asset_dir, "sounds", "elevator_main.mp3")
-            )
-            pygame.mixer.music.play()
-        except pygame.error as msg:
-            print(f"{msg} (possibly system related issue).")
-            self.sound_enabled = False"""
+        self.asset_dir = os.path.join("assets")  # directory of assets folder
         self.icon = pygame.image.load(
             os.path.join(self.asset_dir, "graphics", "icon.png")
-        )
-        pygame.display.set_icon(self.icon)
+        )  # loading icon image of program
+        pygame.display.set_icon(self.icon)  # set icon of Program
 
+    # load states function
     def load_state(self):
-        self.title = title(self)
-        self.state_stack.append(self.title)
+        self.title = title(self)  # assigning object Title state/class
+        self.state_stack.append(
+            self.title
+        )  # adding Title state to state stack and putting it at the bottom of list [-1]
 
         # for future launch settings
         """self.launch_set = setting_state(self)
         self.state_stack.append(self.launch_set)"""
 
+    # update function
     def update(self):
-        self.state_stack[-1].update(self.actions)
+        self.state_stack[-1].update(
+            self.actions
+        )  # calls update function/method unique to each element in state stack
 
     # render function of game
     def render(self):
-        self.state_stack[-1].render(self.SCREEN)
-        pygame.display.update()
-        self.clock.tick(self.FPS)
+        self.state_stack[-1].render(
+            self.SCREEN
+        )  # calls render function/method unique to each element in state stack
+        pygame.display.update()  # updates pygame display
+        self.clock.tick(self.FPS)  # sets FPS of pygame display
 
+    # reset keys function
     def reset_keys(self):
+        # for each key in actions
         for keys in self.actions:
-            self.actions[keys] = False
+            self.actions[keys] = False  # set each key to False
 
 
 # main program
 game = Game()
 if __name__ == "__main__":
-    game.main_loop()
+    game.main_loop()  # calls main game loop function

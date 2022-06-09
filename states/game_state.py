@@ -37,9 +37,6 @@ class main_game(state_format):
             next_state.enter_state()
         self.elevator1.update(actions)
         self.elevator2.update(actions)
-        """self.game.reset_keys()"""
-
-        # elevator velocity changes go here
 
     def render(self, surface):
         self.surface.fill((40, 42, 54))
@@ -133,7 +130,7 @@ class elevator:
                     self.next_floor = int(self.button.val)
                 except:
                     self.next_floor = 1
-                if len(self.floor_queue) <= 6:
+                if len(self.floor_queue) <= 10:
                     if self.floor_queue.count(self.next_floor) == 0:
                         self.floor_queue.append(self.next_floor)
                 print("Added to queue")
@@ -193,7 +190,6 @@ class elevator:
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
                     self.user_choice["Open"] = False
-
             elif self.floor_queue[0] == 4:
                 if self.rect.y > 162:
                     self.rect.y -= 1
@@ -214,7 +210,6 @@ class elevator:
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
                     self.user_choice["Open"] = False
-
             elif self.floor_queue[0] == 6:
                 if self.rect.y > 69:
                     self.rect.y -= 1
