@@ -105,6 +105,8 @@ class elevator:
         self.next_floor = 1
         self.button_group = []
         self.floor_queue = []
+        if len(self.floor_queue) == 0:
+            self.floor_queue.append(self.curr_floor)
         self.curr_frame = 0
         for image_name in data["frames"]["Elevator Pictures"]:
             img_load = pygame.image.load(
@@ -117,37 +119,24 @@ class elevator:
         self.image = self.images[self.curr_frame]
         self.surface = pygame.Surface((img_load.get_width(), img_load.get_height()))
         self.rect = self.surface.get_rect(topleft=(x, y))
+        self.prev_y = self.rect.y
 
     def button_collision_detection(self, actions):
         for self.button in self.button_group:
             if self.button.rect.collidepoint(self.game.mouse_pos) and actions["Click"]:
                 self.button.pushed = True
                 self.button.update(self.button.pushed)
-                self.button.button_sound.play(self.button.sound)
-                """if not self.button.button_sound.get_busy():
+                """self.button.button_sound.play(self.button.sound)
+                if not self.button.button_sound.get_busy():
                     print("Not played")"""
-                if self.button.val == "1":
+                try:
+                    self.next_floor = int(self.button.val)
+                except:
                     self.next_floor = 1
-                    print("1")
-                elif self.button.val == "2":
-                    self.next_floor = 2
-
-                    print("2")
-
-                elif self.button.val == "3":
-                    print("3")
-                    self.next_floor = 3
-
-                elif self.button.val == "4":
-                    print("4")
-                    self.next_floor = 4
-                elif self.button.val == "5":
-                    print("5")
-                    self.next_floor = 5
-                elif self.button.val == "6":
-                    print("6")
-                    self.next_floor = 6
-                print(self.rect.y)
+                if len(self.floor_queue) <= 6:
+                    if self.floor_queue.count(self.next_floor) == 0:
+                        self.floor_queue.append(self.next_floor)
+                print("Added to queue")
             if not actions["Click"]:
                 self.button.pushed = False
                 self.button.update(self.button.pushed)
@@ -162,7 +151,6 @@ class elevator:
                 if self.curr_frame < 4:
                     self.image = self.images[self.curr_frame]
                     self.curr_frame += 1
-
                 else:
                     self.curr_frame = 4
                     self.door_state["Open"] = True
@@ -174,82 +162,74 @@ class elevator:
                 else:
                     self.curr_frame = 0
                     self.door_state["Open"] = False
-        if self.next_floor == 1:
-            if self.curr_floor == 1:
-                self.rect.y = 300
-            else:
+
+        if len(self.floor_queue) != 0:
+            if self.floor_queue[0] == 1:
                 if self.rect.y != 300:
                     self.rect.y += 1
                 elif self.rect.y == 300:
                     self.curr_floor = 1
-        elif self.next_floor == 2:
-            if self.curr_floor == 2:
-                self.rect.y = 254
-            else:
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+            elif self.floor_queue[0] == 2:
                 if self.rect.y > 254:
                     self.rect.y -= 1
                 elif self.rect.y < 254:
                     self.rect.y += 1
                 else:
                     self.curr_floor = 2
-        elif self.next_floor == 3:
-            if self.curr_floor == 3:
-                self.rect.y = 208
-            else:
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+
+            elif self.floor_queue[0] == 3:
                 if self.rect.y > 208:
                     self.rect.y -= 1
                 elif self.rect.y < 208:
                     self.rect.y += 1
                 else:
                     self.curr_floor = 3
-        elif self.next_floor == 4:
-            if self.curr_floor == 4:
-                self.rect.y = 162
-            else:
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+
+            elif self.floor_queue[0] == 4:
                 if self.rect.y > 162:
                     self.rect.y -= 1
                 elif self.rect.y < 162:
                     self.rect.y += 1
                 else:
                     self.curr_floor = 4
-        elif self.next_floor == 5:
-            if self.curr_floor == 5:
-                self.rect.y = 116
-            else:
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+
+            elif self.floor_queue[0] == 5:
                 if self.rect.y > 116:
                     self.rect.y -= 1
                 elif self.rect.y < 116:
                     self.rect.y += 1
                 else:
                     self.curr_floor = 5
-        elif self.next_floor == 6:
-            if self.curr_floor == 6:
-                self.rect.y = 69
-            else:
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+
+            elif self.floor_queue[0] == 6:
                 if self.rect.y > 69:
                     self.rect.y -= 1
                 elif self.rect.y < 69:
                     self.rect.y += 1
                 else:
                     self.curr_floor = 6
+                    if self.floor_queue.count(self.curr_floor) == 1:
+                        self.floor_queue.remove(self.curr_floor)
+        """if self.prev_y != self.rect.y:
+            self.user_choice["Open"] = False
+            self.prev_y = self.rect.y"""
+        if self.prev_y == self.rect.y:
+            self.user_choice["Open"] = True
+        else:
+            self.user_choice["Open"] = False
+            self.prev_y = self.rect.y
 
-        """for keys in self.curr_floor.keys():
-            y = 300
-            if self.curr_floor[keys] == True:
-                self.rect = self.surface.get_rect(
-                    topleft=(135, y - (int(keys) - 1) * 23)
-                )"""
-        """if self.direction["Up"] is True:
-            self.direction["Down"] = False
-        elif self.direction["Down"] is True:
-            self.direction["Up"] = False
-        if self.door_state["Open"] is True:
-            self.door_state["Closed"] = False
-        elif self.door_state["Open"] is False:
-            self.door_state["Closed"] = True
-        if self.door_state["Open"] is True:
-            for keys in self.direction.keys():
-                self.direction[keys] = False"""
+        print(self.floor_queue)
 
     def button_init(self, x=300, y=340):
         for elem in data["frames"]["elevator buttons"]:

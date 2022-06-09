@@ -61,7 +61,6 @@ class Game:
         while self.running:
             self.get_event()  # gets events of user
             self.update()  # logic // update method
-            print(self.actions)
             self.render()  # rendering
 
             """For testing state stacking purposes"""
@@ -99,10 +98,8 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.actions["Pause"] = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print("Mouse down.")
                     self.actions["Click"] = True
                 if event.type == pygame.MOUSEBUTTONUP:
-                    print("Mouse up.")
                     self.actions["Click"] = False
             if (
                 len(self.state_stack) == 3
