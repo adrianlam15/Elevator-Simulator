@@ -225,12 +225,8 @@ class elevator:
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
                     self.user_choice["Open"] = False
-        """if self.prev_y != self.rect.y:
-            self.user_choice["Open"] = False
-            self.prev_y = self.rect.y"""
 
         print(self.floor_queue)
-        print(self.door_state)
 
     def button_init(self, x=300, y=340):
         for elem in data["frames"]["elevator buttons"]:
