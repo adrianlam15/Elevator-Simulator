@@ -12,7 +12,7 @@
 # proposed edits:
 
 # imports
-import pygame, time, os, json
+import pygame, time, os
 
 # local imports
 try:
