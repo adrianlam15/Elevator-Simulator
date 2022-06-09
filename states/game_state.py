@@ -171,6 +171,7 @@ class elevator:
                     self.curr_floor = 1
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
+                    self.user_choice["Open"] = False
             elif self.floor_queue[0] == 2:
                 if self.rect.y > 254:
                     self.rect.y -= 1
@@ -180,6 +181,7 @@ class elevator:
                     self.curr_floor = 2
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
+                    self.user_choice["Open"] = False
 
             elif self.floor_queue[0] == 3:
                 if self.rect.y > 208:
@@ -190,6 +192,7 @@ class elevator:
                     self.curr_floor = 3
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
+                    self.user_choice["Open"] = False
 
             elif self.floor_queue[0] == 4:
                 if self.rect.y > 162:
@@ -200,7 +203,7 @@ class elevator:
                     self.curr_floor = 4
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
-
+                    self.user_choice["Open"] = False
             elif self.floor_queue[0] == 5:
                 if self.rect.y > 116:
                     self.rect.y -= 1
@@ -210,6 +213,7 @@ class elevator:
                     self.curr_floor = 5
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
+                    self.user_choice["Open"] = False
 
             elif self.floor_queue[0] == 6:
                 if self.rect.y > 69:
@@ -220,16 +224,13 @@ class elevator:
                     self.curr_floor = 6
                     if self.floor_queue.count(self.curr_floor) == 1:
                         self.floor_queue.remove(self.curr_floor)
+                    self.user_choice["Open"] = False
         """if self.prev_y != self.rect.y:
             self.user_choice["Open"] = False
             self.prev_y = self.rect.y"""
-        if self.prev_y == self.rect.y:
-            self.user_choice["Open"] = True
-        else:
-            self.user_choice["Open"] = False
-            self.prev_y = self.rect.y
 
         print(self.floor_queue)
+        print(self.door_state)
 
     def button_init(self, x=300, y=340):
         for elem in data["frames"]["elevator buttons"]:
