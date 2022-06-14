@@ -102,6 +102,8 @@ class elevator:
         self.next_floor = 1
         self.button_group = []
         self.floor_queue = []
+        self.time_now = 0
+        self.open_time = 0
         if len(self.floor_queue) == 0:
             self.floor_queue.append(self.curr_floor)
         self.curr_frame = 0
@@ -146,93 +148,104 @@ class elevator:
         elif actions["Click"] == False:
             self.button_collision_detection(actions)
 
-        if len(self.floor_queue) != 0:
-            if self.floor_queue[0] == 1:
-                if self.rect.y != 300:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                elif self.rect.y == 300:
-                    self.curr_floor = 1
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
-            elif self.floor_queue[0] == 2:
-                if self.rect.y > 254:
-                    self.door_state["Open"] = False
-                    self.rect.y -= 1
-                elif self.rect.y < 254:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                else:
-                    self.curr_floor = 2
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
-            elif self.floor_queue[0] == 3:
-                if self.rect.y > 208:
-                    self.rect.y -= 1
-                    self.door_state["Open"] = False
-                elif self.rect.y < 208:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                else:
-                    self.curr_floor = 3
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
-            elif self.floor_queue[0] == 4:
-                if self.rect.y > 162:
-                    self.rect.y -= 1
-                    self.door_state["Open"] = False
-                elif self.rect.y < 162:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                else:
-                    self.curr_floor = 4
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
-            elif self.floor_queue[0] == 5:
-                if self.rect.y > 116:
-                    self.rect.y -= 1
-                    self.door_state["Open"] = False
-                elif self.rect.y < 116:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                else:
-                    self.curr_floor = 5
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
-            elif self.floor_queue[0] == 6:
-                if self.rect.y > 69:
-                    self.rect.y -= 1
-                    self.door_state["Open"] = False
-                elif self.rect.y < 69:
-                    self.rect.y += 1
-                    self.door_state["Open"] = False
-                else:
-                    self.curr_floor = 6
-                    if self.floor_queue.count(self.curr_floor) == 1:
-                        self.floor_queue.remove(self.curr_floor)
-                    self.door_state["Open"] = True
+        if self.curr_frame == 0:
+            if len(self.floor_queue) != 0:
+                if self.floor_queue[0] == 1:
+                    if self.rect.y != 300:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    elif self.rect.y == 300:
+                        self.curr_floor = 1
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
+                elif self.floor_queue[0] == 2:
+                    if self.rect.y > 254:
+                        self.door_state["Open"] = False
+                        self.rect.y -= 1
+                    elif self.rect.y < 254:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    else:
+                        self.curr_floor = 2
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
+                elif self.floor_queue[0] == 3:
+                    if self.rect.y > 208:
+                        self.rect.y -= 1
+                        self.door_state["Open"] = False
+                    elif self.rect.y < 208:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    else:
+                        self.curr_floor = 3
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
+                elif self.floor_queue[0] == 4:
+                    if self.rect.y > 162:
+                        self.rect.y -= 1
+                        self.door_state["Open"] = False
+                    elif self.rect.y < 162:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    else:
+                        self.curr_floor = 4
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
+                elif self.floor_queue[0] == 5:
+                    if self.rect.y > 116:
+                        self.rect.y -= 1
+                        self.door_state["Open"] = False
+                    elif self.rect.y < 116:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    else:
+                        self.curr_floor = 5
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
+                elif self.floor_queue[0] == 6:
+                    if self.rect.y > 69:
+                        self.rect.y -= 1
+                        self.door_state["Open"] = False
+                    elif self.rect.y < 69:
+                        self.rect.y += 1
+                        self.door_state["Open"] = False
+                    else:
+                        self.curr_floor = 6
+                        if self.floor_queue.count(self.curr_floor) == 1:
+                            self.floor_queue.remove(self.curr_floor)
+                        self.door_state["Open"] = True
 
+        self.delta_time = pygame.time.get_ticks() - self.time_now
         if self.door_state["Open"] == True:
             if self.user_choice["Open"] == True:
                 if self.curr_frame < 4:
-                    self.curr_frame += 1
-                else:
-                    self.door_state["Open"] = True
-                self.image = self.images[self.curr_frame]
-        else:
-            if self.curr_frame > 0:
-                self.curr_frame -= 1
-            else:
-                self.curr_frame = 0
-                self.door_state["Open"] = False
-            self.image = self.images[self.curr_frame]
+                    if self.delta_time >= 400:
+                        self.curr_frame += 1
+                        self.time_now = pygame.time.get_ticks()
+                        self.image = self.images[self.curr_frame]
+                elif self.curr_frame == 4:
+                    self.open_door_timer = pygame.time.get_ticks() - self.open_time
+                    if self.open_door_timer >= 5000:
+                        print("5 seconds has passed.")
+                        self.open_time = pygame.time.get_ticks()
+                        self.time_now = pygame.time.get_ticks()
+                        self.door_state["Open"] = False
 
-        print(self.curr_frame)
+        elif self.door_state["Open"] == False:
+            self.delta_time = pygame.time.get_ticks() - self.time_now
+
+            if self.delta_time >= 400:
+                if self.curr_frame > 0:
+                    self.curr_frame -= 1
+                    self.open_time = pygame.time.get_ticks()
+                    self.time_now = pygame.time.get_ticks()
+                    self.image = self.images[self.curr_frame]
+        # print(self.floor_queue)
 
     def button_init(self, x=300, y=340):
         for elem in data["frames"]["elevator buttons"]:
