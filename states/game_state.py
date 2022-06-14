@@ -231,14 +231,12 @@ class elevator:
                 elif self.curr_frame == 4:
                     self.open_door_timer = pygame.time.get_ticks() - self.open_time
                     if self.open_door_timer >= 5000:
-                        print("5 seconds has passed.")
                         self.open_time = pygame.time.get_ticks()
                         self.time_now = pygame.time.get_ticks()
                         self.door_state["Open"] = False
 
         elif self.door_state["Open"] == False:
             self.delta_time = pygame.time.get_ticks() - self.time_now
-
             if self.delta_time >= 400:
                 if self.curr_frame > 0:
                     self.curr_frame -= 1
