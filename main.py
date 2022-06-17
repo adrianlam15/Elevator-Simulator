@@ -3,15 +3,22 @@
 # GitHub: https://github.com/adrianlam15/Elevator-Simulator
 # 01-06-2022
 #
-# program desc:
-# additional features:
-# - states (title, main, paused)
-# - .wav sound files have to be used because .mp3 and .ogg files
-# contain errors when trying to load specified module
+# Simulating a dual-elevator system in a small apartment building. Program uses OOP principles
+# (classes, inheritance, polymorphism) and uses Pygame for the user interface.Program simulates
+# elevators in a building with a Dracula theme (https://draculatheme.com/contribute).
+# Program also uses Gerald's Keys (public domain). Program also uses a state machine to incorporate
+# title screen, main screen, and paused screen. 
+
+# EXPERIMENTAL:
+# - Sound toggle is known to be too fast and cause issues
+# - Pause screen only shows a red screen to indicate pause state is present (press 'Escape' on keyboard)
 #
-# proposed edits:
+# FUTURE IMPLEMENTATIONS:
+# - Up and down arrow buttons for users OUTSIDE elevator indicating which way they would like to go
+# - Open and close buttons for users INSIDE elevator indicating if they wish to open elevator doors
 
 # imports
+#
 import pygame, time, os
 
 # local imports
